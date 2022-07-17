@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NSE.Identity.API.Data;
 
 namespace NSE.Identity.API
@@ -25,11 +29,44 @@ namespace NSE.Identity.API
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                bearerOptions.RequireHttpsMetadata = true;
+                bearerOptions.SaveToken = true;
+                bearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+
+                };
+            }
+                
+                )
+                ;
+
             builder.Services.AddControllers();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "NerdStore Enterprise Identity API",
+                Description = "Identity API of NerdStoreEnterprise",
+                Contact = new OpenApiContact()
+                {
+                    Name = "John Vitor Constant de Oliveira Lourenço",
+                    Email = "johnvitorconstant@gmail.com",
+                    Url = new Uri("https://github.com/johnvitorconstant")
+                },
+                License = new OpenApiLicense()
+                {
+                    Name = "MIT",
+                    Url = new Uri("https://opensource.org/licenses/MIT")
+                },
+            }));
 
             var app = builder.Build();
 
@@ -38,19 +75,19 @@ namespace NSE.Identity.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                app.UseHttpsRedirection();
+
+                app.UseRouting();
+
+                app.UseAuthentication();
+                app.UseAuthorization();
+
+
+                app.MapControllers();
+
+                app.Run();
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-            
-            app.UseAuthentication();
-            app.UseAuthorization();
-            
-
-            app.MapControllers();
-
-            app.Run();
         }
     }
 }
