@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NSE.Identity.API.Data;
+
 namespace NSE.Identity.API
 {
     public class Program
@@ -8,7 +12,21 @@ namespace NSE.Identity.API
 
             // Add services to the container.
 
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
+
+
+            builder.Services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -24,8 +42,11 @@ namespace NSE.Identity.API
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+            
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            
 
             app.MapControllers();
 
