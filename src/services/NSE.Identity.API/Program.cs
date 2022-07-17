@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NSE.Identity.API.Data;
+using NSE.Identity.API.Extensions;
+using System.Text;
 
 namespace NSE.Identity.API
 {
@@ -28,6 +30,16 @@ namespace NSE.Identity.API
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
+
+            IConfigurationSection appSettingsSection = builder.Configuration.GetSection("AppSettings");
+            builder.Services.Configure<AppSettings>(appSettingsSection);
+
+            AppSettings appSettings = appSettingsSection.Get<AppSettings>();
+            byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+
+
 
             builder.Services.AddAuthentication(options =>
             {
@@ -40,12 +52,16 @@ namespace NSE.Identity.API
                 bearerOptions.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
 
+                    ValidateIssuer = true,
+                    ValidIssuer = appSettings.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = appSettings.ValidAt,
+                   
                 };
-            }
-                
-                )
-                ;
+            });
 
             builder.Services.AddControllers();
 
