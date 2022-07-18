@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "NSE.Identity.API": {
+    "Selfhosting - Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -10,7 +10,8 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7240;http://localhost:5240"
     },
-    "IIS Express": {
+
+    "IIS - Development": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -18,6 +19,27 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+
+
+    "IIS - Staging": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      }
+    },
+
+    "IIS - Production": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    },
+
+
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
