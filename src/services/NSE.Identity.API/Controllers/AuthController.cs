@@ -97,6 +97,23 @@ namespace NSE.Identity.API.Controllers
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 });
 
+            var encodedToken = tokenHandler.WriteToken(token);
+
+            var response = new UserResponseLogin
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = TimeSpan.FromHours(_appSettings.HoursToExpire).TotalSeconds,
+                UserToken = new UserToken
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    UserClaims = claims.Select(c=> new UserClaim { Type = c.Type, Value = c.Value })
+                }
+
+            };
+
+            return response;
+
         }
 
         private static long ToUnixEpochDate(DateTime date) =>
