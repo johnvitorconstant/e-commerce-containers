@@ -1,4 +1,4 @@
-# Nerd Store
+# E-Commerce one Containers
 E-commerce application created to practice some concepts of ASP.NET Core.
 
 
