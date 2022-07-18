@@ -13,15 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{3EF228F7-976
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{0A116FD2-116E-4655-894F-F24AA43F7B22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Identity.API", "src\services\NSE.Identity.API\ECC.Identity.API.csproj", "{611137D0-8F4B-452C-A6BA-B04065CCB9AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Identity.API", "src\services\ECC.Identity.API\ECC.Identity.API.csproj", "{611137D0-8F4B-452C-A6BA-B04065CCB9AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{0FD5B0DD-3385-4716-917E-CD95E5D4AB61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.WebApp.MVC", "src\web\NSE.WebApp.MVC\NSE.WebApp.MVC.csproj", "{364E8CAB-EB05-45BA-B17A-DD3D6770AF32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.WebApp.MVC", "src\web\ECC.WebApp.MVC\ECC.WebApp.MVC.csproj", "{364E8CAB-EB05-45BA-B17A-DD3D6770AF32}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{10498D37-E0B8-4BF0-A6E6-5E9713F7D36B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSE.Core", "src\building-blocks\NSE.Core\NSE.Core.csproj", "{E12EC3B6-3086-4984-A6B5-76EA45E6108F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Core", "src\building-blocks\ECC.Core\ECC.Core.csproj", "{E12EC3B6-3086-4984-A6B5-76EA45E6108F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShoppingCart", "ShoppingCart", "{FEA96973-5232-404C-ACE8-0C776609496E}"
 EndProject
@@ -33,15 +33,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{314D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Request", "Request", "{280A1FCF-9D90-4F63-B136-13B956059D6C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Client.API", "src\services\NSE.Client.API\ECC.Client.API.csproj", "{C579FF70-C5A8-4899-AE6F-E4E37D6314BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Client.API", "src\services\ECC.Client.API\ECC.Client.API.csproj", "{C579FF70-C5A8-4899-AE6F-E4E37D6314BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Payment.API", "src\services\NSE.Payment.API\ECC.Payment.API.csproj", "{D75F0D6C-85AF-47A3-AFF2-A3CFCE2B8FBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Payment.API", "src\services\ECC.Payment.API\ECC.Payment.API.csproj", "{D75F0D6C-85AF-47A3-AFF2-A3CFCE2B8FBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Request.API", "src\services\NSE.Request.API\ECC.Request.API.csproj", "{1A62EC84-DF52-49D1-8196-58BF28CEE9CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Request.API", "src\services\ECC.Request.API\ECC.Request.API.csproj", "{1A62EC84-DF52-49D1-8196-58BF28CEE9CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Catalog.API", "src\services\NSE.Catalog.API\ECC.Catalog.API.csproj", "{2FE718E0-3B0B-475F-A8BD-3A01CA31170D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.Catalog.API", "src\services\ECC.Catalog.API\ECC.Catalog.API.csproj", "{2FE718E0-3B0B-475F-A8BD-3A01CA31170D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.ShoppingCart.API", "src\services\NSE.ShoppingCart.API\ECC.ShoppingCart.API.csproj", "{62B5E143-D1AB-4BC8-876D-4A5389B07FF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.ShoppingCart.API", "src\services\ECC.ShoppingCart.API\ECC.ShoppingCart.API.csproj", "{62B5E143-D1AB-4BC8-876D-4A5389B07FF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
