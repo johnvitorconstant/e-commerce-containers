@@ -42,7 +42,7 @@ namespace NSE.Identity.API.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return Ok();
+                return Ok(await GenerateJwt(userSignUp.Email));
             }
 
             return BadRequest(result.Errors);
@@ -56,7 +56,9 @@ namespace NSE.Identity.API.Controllers
             if (!ModelState.IsValid) return BadRequest();
             var result = await _signInManager.PasswordSignInAsync(userSignIn.Email, userSignIn.Password, false, true);
 
-            if (result.Succeeded) return Ok();
+            if (result.Succeeded) 
+                return Ok(await GenerateJwt(userSignIn.Email));
+
             return BadRequest();
 
         }
@@ -94,7 +96,8 @@ namespace NSE.Identity.API.Controllers
                     Audience= _appSettings.ValidAt,
                     Subject = identityClaims,
                     Expires = DateTime.UtcNow.AddHours(_appSettings.HoursToExpire),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), 
+                    SecurityAlgorithms.HmacSha256Signature)
                 });
 
             var encodedToken = tokenHandler.WriteToken(token);
