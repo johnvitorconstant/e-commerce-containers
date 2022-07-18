@@ -94,8 +94,8 @@ namespace NSE.Identity.API
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "NerdStore Enterprise Identity API",
-                Description = "Identity API of NerdStoreEnterprise",
+                Title = "ECommerceOnContainers Identity API",
+                Description = "Identity API of ECommerceOnContainers",
                 Contact = new OpenApiContact()
                 {
                     Name = "John Vitor Constant de Oliveira Lourenço",
