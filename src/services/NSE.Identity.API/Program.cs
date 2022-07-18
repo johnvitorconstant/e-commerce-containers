@@ -16,27 +16,42 @@ namespace NSE.Identity.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            ConfigureDataBase(builder);
+            ConfigureIdentity(builder); 
+            ConfigureServices(builder);
+            ConfigureSwagger(builder);
+            ConfigureApp(builder);
+
+
+        }
+
+
+        private static void ConfigureDataBase(WebApplicationBuilder builder)
+        {
             // Add services to the container.
-
-
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(connectionString);
             });
+        }
 
-
+        private static void ConfigureIdentity(WebApplicationBuilder builder)
+        {
             builder.Services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-            
+              .AddRoles<IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddDefaultTokenProviders();
+
 
             IConfigurationSection appSettingsSection = builder.Configuration.GetSection("AppSettings");
             builder.Services.Configure<AppSettings>(appSettingsSection);
 
+
+
             AppSettings appSettings = appSettingsSection.Get<AppSettings>();
             byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
 
 
 
@@ -59,15 +74,25 @@ namespace NSE.Identity.API
 
                     ValidateAudience = true,
                     ValidAudience = appSettings.ValidAt,
-                   
+
                 };
             });
 
+
+        }
+
+        private static void ConfigureServices(WebApplicationBuilder builder)
+        {
             builder.Services.AddControllers();
+        }
+
+        private static void ConfigureSwagger(WebApplicationBuilder builder)
+        {
+            var services = builder.Services;
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "NerdStore Enterprise Identity API",
                 Description = "Identity API of NerdStoreEnterprise",
@@ -83,27 +108,27 @@ namespace NSE.Identity.API
                     Url = new Uri("https://opensource.org/licenses/MIT")
                 },
             }));
+        }
 
+        private static void ConfigureApp(WebApplicationBuilder builder)
+        {
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-
-                app.UseHttpsRedirection();
-
-                app.UseRouting();
-
-                app.UseAuthentication();
-                app.UseAuthorization();
-
-
-                app.MapControllers();
-
-                app.Run();
+                builder.Configuration.AddUserSecrets<Program>();
             }
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            app.Run();
         }
+
+
     }
 }
