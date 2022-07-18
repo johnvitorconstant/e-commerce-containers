@@ -1,4 +1,4 @@
-# E-Commerce one Containers
+# E-Commerce on Containers
 E-commerce application created to practice some concepts of ASP.NET Core.
 
 
