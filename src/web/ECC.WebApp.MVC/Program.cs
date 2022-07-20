@@ -1,3 +1,4 @@
+using ECC.WebApp.MVC.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace NSE.WebApp.MVC
@@ -18,11 +19,14 @@ namespace NSE.WebApp.MVC
               });
 
             // Add services to the container.
+
+            
             builder.Services.AddControllersWithViews();
 
-          
-            var app = builder.Build();
+            builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
 
+            var app = builder.Build();
+            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -37,6 +41,7 @@ namespace NSE.WebApp.MVC
 
             app.UseRouting();
 
+            
 
             app.UseAuthentication();
             app.UseAuthorization();
