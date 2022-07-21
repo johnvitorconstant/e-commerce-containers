@@ -1,3 +1,4 @@
+using ECC.WebApp.MVC.Extensions;
 using ECC.WebApp.MVC.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -24,6 +25,10 @@ namespace NSE.WebApp.MVC
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddScoped<IUser, AspNetUser>();
+
+
 
             var app = builder.Build();
             

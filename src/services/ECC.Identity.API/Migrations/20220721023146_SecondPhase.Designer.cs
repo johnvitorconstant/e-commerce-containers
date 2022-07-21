@@ -9,11 +9,11 @@ using NSE.Identity.API.Data;
 
 #nullable disable
 
-namespace NSE.Identity.API.Migrations
+namespace ECC.Identity.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220717035946_initial")]
-    partial class initial
+    [Migration("20220721023146_SecondPhase")]
+    partial class SecondPhase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

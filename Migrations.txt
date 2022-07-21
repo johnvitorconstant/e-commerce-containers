@@ -1,0 +1,6 @@
+Add-Migration SecondPhase
+update-database
+
+
+Default User: john@gmail.com
+Default PassWord: Senha@123
