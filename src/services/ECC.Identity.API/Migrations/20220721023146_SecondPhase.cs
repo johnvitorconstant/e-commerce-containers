@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace NSE.Identity.API.Migrations
+namespace ECC.Identity.API.Migrations
 {
-    public partial class initial : Migration
+    public partial class SecondPhase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

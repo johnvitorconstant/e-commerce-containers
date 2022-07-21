@@ -8,7 +8,7 @@ using NSE.Identity.API.Data;
 
 #nullable disable
 
-namespace NSE.Identity.API.Migrations
+namespace ECC.Identity.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
