@@ -1,6 +1,11 @@
 ﻿using ECC.WebApp.MVC.Models;
 using ECC.WebApp.MVC.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using IAuthenticationService = ECC.WebApp.MVC.Services.IAuthenticationService;
 
 namespace ECC.WebApp.MVC.Controllers
 {
@@ -29,6 +34,7 @@ namespace ECC.WebApp.MVC.Controllers
 
             //API Register
             var response = await _service.Register(user);
+            await DoLogin(response);
 
             // User login
             return RedirectToAction("Index", "Home");
@@ -52,7 +58,7 @@ namespace ECC.WebApp.MVC.Controllers
 
             //API login
             var response = await _service.Login(user);
-
+            await DoLogin(response);
 
 
 
@@ -68,6 +74,35 @@ namespace ECC.WebApp.MVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        private async Task DoLogin(UserResponseSignIn response)
+        {
+            var token = GetFormatedToken(response.AccessToken);
+
+            var claims = new List<Claim>();
+            claims.Add(new Claim("JWT", response.AccessToken));
+            claims.AddRange(token.Claims);
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+
+            var authProperties = new AuthenticationProperties
+            {
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60),
+                IsPersistent= true
+
+        };
+
+
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity), authProperties);
+        }
+
+
+        private static JwtSecurityToken GetFormatedToken(string jwtToken)
+        {
+            return new JwtSecurityTokenHandler().ReadToken(jwtToken) as JwtSecurityToken;
+        }
 
     }
 }
