@@ -9,7 +9,7 @@ using IAuthenticationService = ECC.WebApp.MVC.Services.IAuthenticationService;
 
 namespace ECC.WebApp.MVC.Controllers
 {
-    public class IdentityController : Controller
+    public class IdentityController : MainController
     {
 
         private readonly IAuthenticationService _service;
@@ -34,9 +34,11 @@ namespace ECC.WebApp.MVC.Controllers
 
             //API Register
             var response = await _service.Register(user);
-            await DoLogin(response);
+            if (ResponseHasErrors(response.ResponseResult)) return View(user);
+
 
             // User login
+            await DoLogin(response);
             return RedirectToAction("Index", "Home");
 
 
@@ -58,10 +60,10 @@ namespace ECC.WebApp.MVC.Controllers
 
             //API login
             var response = await _service.Login(user);
+            if (ResponseHasErrors(response.ResponseResult)) return View(user);
+
+
             await DoLogin(response);
-
-
-
             return RedirectToAction("Index", "Home");
 
 
@@ -71,6 +73,7 @@ namespace ECC.WebApp.MVC.Controllers
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
 

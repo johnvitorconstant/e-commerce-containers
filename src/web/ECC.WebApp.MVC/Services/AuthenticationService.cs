@@ -1,10 +1,11 @@
 ﻿using ECC.WebApp.MVC.Models;
+using NSE.WebApp.MVC.Models;
 using System.Text;
 using System.Text.Json;
 
 namespace ECC.WebApp.MVC.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : Service, IAuthenticationService
     {
 
         private readonly HttpClient _httpClient;
@@ -31,6 +32,14 @@ namespace ECC.WebApp.MVC.Services
                 PropertyNameCaseInsensitive = true,
             };
 
+            if (!HandleErrorResponses(response))
+            {
+                return new UserResponseSignIn
+                {
+                    ResponseResult = JsonSerializer.Deserialize<ResponseResult>(result, options)
+                };
+
+            }
 
             var deserializedResult = JsonSerializer.Deserialize<UserResponseSignIn>(result, options);
 
@@ -53,6 +62,15 @@ namespace ECC.WebApp.MVC.Services
             {
                 PropertyNameCaseInsensitive = true,
             };
+
+            if (!HandleErrorResponses(response))
+            {
+                return new UserResponseSignIn
+                {
+                    ResponseResult = JsonSerializer.Deserialize<ResponseResult>(result, options)
+                };
+
+            }
 
 
             var deserializedResult = JsonSerializer.Deserialize<UserResponseSignIn>(result, options);

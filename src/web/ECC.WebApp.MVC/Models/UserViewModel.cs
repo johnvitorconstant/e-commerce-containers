@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NSE.WebApp.MVC.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECC.WebApp.MVC.Models
 {
@@ -33,6 +34,7 @@ namespace ECC.WebApp.MVC.Models
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
         public UserToken UserToken { get; set; }
+        public ResponseResult ResponseResult { get; set; }
     }
 
     public class UserToken
