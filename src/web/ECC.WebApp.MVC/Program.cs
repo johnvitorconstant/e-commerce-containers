@@ -24,10 +24,14 @@ namespace NSE.WebApp.MVC
             
             builder.Services.AddControllersWithViews();
 
+            builder.Services.Configure<AppSettings>(builder.Configuration);
+            
+
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IUser, AspNetUser>();
 
+            
 
 
             var app = builder.Build();

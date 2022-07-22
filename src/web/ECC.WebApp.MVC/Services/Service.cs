@@ -1,4 +1,8 @@
 ﻿using ECC.WebApp.MVC.Extensions;
+using System.Text.Json;
+using System.Text;
+using Microsoft.Extensions.Options;
+using NSE.WebApp.MVC.Models;
 
 namespace ECC.WebApp.MVC.Services
 {
@@ -22,5 +26,27 @@ namespace ECC.WebApp.MVC.Services
             response.EnsureSuccessStatusCode();
             return true;
         }
+
+        protected StringContent GetSerializedDataContent(object data)
+        {
+           return new StringContent(
+              JsonSerializer.Serialize(data),
+              Encoding.UTF8,
+              "application/json"
+              );
+        }
+
+        protected async Task<T> GetDeserializedDataResponse<T>(HttpResponseMessage responseMessage)
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            var result = await responseMessage.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<T>(result, options);
+        }
+
     }
 }
