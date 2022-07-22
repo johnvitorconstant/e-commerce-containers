@@ -25,7 +25,7 @@
         {
             if(httpRequestException.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                context.Response.Redirect("/login");
+                context.Response.Redirect($"/login?ReturnUrl={context.Request.Path}");
                 return;
             }
 

@@ -46,16 +46,19 @@ namespace ECC.WebApp.MVC.Controllers
 
         [HttpGet]
         [Route("login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string? returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(UserSignIn user)
+        public async Task<IActionResult> Login(UserSignIn user, string? returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
+
             if (!ModelState.IsValid) return View(user);
 
             //API login
@@ -64,7 +67,10 @@ namespace ECC.WebApp.MVC.Controllers
 
 
             await DoLogin(response);
-            return RedirectToAction("Index", "Home");
+
+            if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Home");
+
+            return LocalRedirect(returnUrl);
 
 
         }
