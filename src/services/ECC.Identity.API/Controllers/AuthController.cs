@@ -30,6 +30,9 @@ namespace NSE.Identity.API.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> Signup(UserSignUp userSignUp)
         {
+
+            return new StatusCodeResult(500);
+
             if (!ModelState.IsValid)
             {
                 return CustomResponse(ModelState);

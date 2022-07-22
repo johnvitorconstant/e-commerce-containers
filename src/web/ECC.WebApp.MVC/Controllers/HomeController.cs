@@ -6,12 +6,7 @@ namespace NSE.WebApp.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        
 
         public IActionResult Index()
         {
@@ -23,10 +18,36 @@ namespace NSE.WebApp.MVC.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Route("error/{id:length(3,3)}")]
+        public IActionResult Error(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var modelError = new ErrorViewModel();
+            
+            if(id == 500)
+            {
+                modelError.ErrorCode = id;
+                modelError.Message = "Error 500 message";
+                modelError.Title = "Error 500 title";
+            } 
+            else if (id == 404)
+            {
+                modelError.ErrorCode = id;
+                modelError.Message = "This page does not exist";
+                modelError.Title = "Error 404 title";
+            }
+            else if (id == 403)
+            {
+                modelError.ErrorCode = id;
+                modelError.Message = "You do not have authorization";
+                modelError.Title = "Error 403 title";
+            }
+            else 
+            {
+                return StatusCode(404);
+            }
+
+            return View("Error", modelError);
+
         }
     }
 }

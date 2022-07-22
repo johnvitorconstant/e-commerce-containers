@@ -24,22 +24,28 @@ namespace NSE.WebApp.MVC
             
             builder.Services.AddControllersWithViews();
 
+            builder.Services.Configure<AppSettings>(builder.Configuration);
+            
+
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IUser, AspNetUser>();
 
+            
 
 
             var app = builder.Build();
             
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
+         //   if (app.Environment.IsDevelopment())
+         //   {
+                app.UseExceptionHandler("/error/500");
+                app.UseStatusCodePagesWithRedirects("/error/{0}");
+
                 // The defaulst HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+         //   }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -50,6 +56,8 @@ namespace NSE.WebApp.MVC
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.MapControllerRoute(
                 name: "default",
