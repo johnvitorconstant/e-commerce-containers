@@ -1,4 +1,6 @@
 using ECC.Catalog.API.Data;
+using ECC.Catalog.API.Data.Repository;
+using ECC.Catalog.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace NSE.Catalog.API
@@ -12,10 +14,13 @@ namespace NSE.Catalog.API
             // Add services to the container.
             ConfigureDataBase(builder);
 
+            ConfigureDependency(builder.Services);
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
 
             var app = builder.Build();
 
@@ -35,6 +40,15 @@ namespace NSE.Catalog.API
 
             app.Run();
         }
+
+        private static void ConfigureDependency(IServiceCollection services)
+        {
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<CatalogContext>();
+        }
+
+   
+
         private static void ConfigureDataBase(WebApplicationBuilder builder)
         {
             // Add services to the container.

@@ -1,15 +1,15 @@
 ﻿using ECC.Catalog.API.Models;
+using ECC.Core.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECC.Catalog.API.Data
 {
-    public class CatalogContext : DbContext
+    public class CatalogContext : DbContext, IUnityOfWork
     {
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options)
         {
 
         }
-
 
         public DbSet<Product> Products { get; set; }
 
@@ -22,6 +22,10 @@ namespace ECC.Catalog.API.Data
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogContext).Assembly);
 
+        }
+        public async Task<bool> Commit()
+        {
+            return await base.SaveChangesAsync() > 0;
         }
 
     }

@@ -1,4 +1,4 @@
-﻿using ECC.Core.DomainObjects;
+﻿using ECC.Core.Data;
 
 namespace ECC.Catalog.API.Models
 {

@@ -1,33 +1,44 @@
 ﻿using ECC.Catalog.API.Models;
+using ECC.Core.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECC.Catalog.API.Data.Repository
 {
     public class ProductRepository : IProductRepository
     {
 
-        public Task<IEnumerable<Product>> FindAll()
+        private readonly CatalogContext _context;
+
+        public ProductRepository(CatalogContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Product> FindById(Guid id)
+        public IUnityOfWork UnityOfWork => _context;
+
+        public async Task<IEnumerable<Product>> FindAll()
         {
-            throw new NotImplementedException();
+            return await _context.Products.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<Product> FindById(Guid id)
+        {
+           return await _context.Products.FindAsync(id);
         }
 
         public void Add(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.AddAsync(product);
         }
 
         public void Update(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Update(product);
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context?.Dispose();
         }
 
     }
