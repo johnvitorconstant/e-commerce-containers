@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECC.Core.Data;
 
-namespace ECC.Core.Data
+public interface IUnityOfWork
 {
-    public interface IUnityOfWork
-    {
-        Task<bool> Commit();
-    }
+    Task<bool> Commit();
 }

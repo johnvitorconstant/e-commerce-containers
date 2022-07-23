@@ -1,14 +1,12 @@
 ﻿using ECC.Core.Data;
 
-namespace ECC.Catalog.API.Models
+namespace ECC.Catalog.API.Models;
+
+public interface IProductRepository : IRepository<Product>
 {
-    public interface IProductRepository :IRepository<Product>
-    {
-        Task<IEnumerable<Product>> FindAll();
-        Task<Product> FindById(Guid id);
+    Task<IEnumerable<Product>> FindAll();
+    Task<Product> FindById(Guid id);
 
-        void Add(Product product);
-        void Update(Product product);  
-
-    }
+    void Add(Product product);
+    void Update(Product product);
 }

@@ -1,13 +1,10 @@
 ﻿using ECC.WebApp.MVC.Models;
 
-namespace ECC.WebApp.MVC.Services
+namespace ECC.WebApp.MVC.Services;
+
+public interface IAuthenticationService
 {
-    public interface IAuthenticationService
-    {
-        Task<UserResponseSignIn> Login(UserSignIn user);
+    Task<UserResponseSignIn> Login(UserSignIn user);
 
-        Task<UserResponseSignIn> Register(UserSignUp user);
-    }
+    Task<UserResponseSignIn> Register(UserSignUp user);
 }
-
-

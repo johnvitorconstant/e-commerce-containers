@@ -8,19 +8,14 @@ namespace ECC.WebAPI.Core.Identity;
 
 public static class JwtConfig
 {
-    private static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
-            
-        IConfigurationSection appSettingsSection = configuration.GetSection("AppSettings");
+        var appSettingsSection = configuration.GetSection("AppSettings");
         services.Configure<AppSettings>(appSettingsSection);
 
 
-
-        AppSettings appSettings = appSettingsSection.Get<AppSettings>();
-        byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
-
-
-
+        var appSettings = appSettingsSection.Get<AppSettings>();
+        var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
 
         services.AddAuthentication(options =>
@@ -40,11 +35,8 @@ public static class JwtConfig
                 ValidIssuer = appSettings.Issuer,
 
                 ValidateAudience = true,
-                ValidAudience = appSettings.ValidAt,
-
+                ValidAudience = appSettings.ValidAt
             };
         });
-
-
     }
 }
