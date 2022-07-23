@@ -1,4 +1,5 @@
 ﻿using ECC.WebApp.MVC.Models;
+using Refit;
 
 namespace ECC.WebApp.MVC.Services
 {
@@ -8,5 +9,14 @@ namespace ECC.WebApp.MVC.Services
 
         Task<ProductViewModel> FindById(Guid id);
 
+    }
+
+    public interface ICatalogServiceRefit
+    {
+        [Get("/api/catalog/products/")]
+        Task<IEnumerable<ProductViewModel>> FindAll();
+
+        [Get("/api/catalog/products/{id}")]
+        Task<ProductViewModel> FindById(Guid id);
     }
 }

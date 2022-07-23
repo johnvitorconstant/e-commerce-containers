@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Refit;
 
 namespace ECC.WebApp.MVC.Extensions;
 
@@ -19,19 +20,27 @@ public class ExceptionMiddleware
         }
         catch (CustomHttpRequestException ex)
         {
-            HandleRequestExceptionAsync(httpContext, ex);
+            HandleRequestExceptionAsync(httpContext, ex.StatusCode);
+        }
+        catch (ValidationApiException ex)
+        {
+            HandleRequestExceptionAsync(httpContext, ex.StatusCode);
+        }
+        catch (ApiException ex)
+        {
+            HandleRequestExceptionAsync(httpContext, ex.StatusCode);
         }
     }
 
     private static void HandleRequestExceptionAsync(HttpContext context,
-        CustomHttpRequestException httpRequestException)
+        HttpStatusCode statusCode)
     {
-        if (httpRequestException.StatusCode == HttpStatusCode.Unauthorized)
+        if (statusCode == HttpStatusCode.Unauthorized)
         {
             context.Response.Redirect($"/login?ReturnUrl={context.Request.Path}");
             return;
         }
 
-        context.Response.StatusCode = (int) httpRequestException.StatusCode;
+        context.Response.StatusCode = (int)statusCode;
     }
 }

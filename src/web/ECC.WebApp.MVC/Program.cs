@@ -28,12 +28,7 @@ public class Program
 
         // builder.Services.ConfigureJwt(builder.Configuration);
 
-        builder.Services.AddTransient<HttpClientAuthorizationDelegationHandler>();
-        builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
-        builder.Services.AddHttpClient<ICatalogService, CatalogService>()
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>();
-        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        builder.Services.AddScoped<IUser, AspNetUser>();
+        ConfigureDepedencyInjection(builder);
 
         var app = builder.Build();
 
@@ -64,4 +59,25 @@ public class Program
 
         app.Run();
     }
+
+    private static void ConfigureDepedencyInjection(WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<HttpClientAuthorizationDelegationHandler>();
+        builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
+
+        //    services.AddHttpClient<ICatalogService, CatalogService>()
+        //        .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>();
+
+        builder.Services.AddHttpClient("Refit", options =>
+            {
+                options.BaseAddress = new Uri(builder.Configuration.GetSection("CatalogUrl").Value);
+            })
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>()
+            .AddTypedClient(Refit.RestService.For<ICatalogServiceRefit>);
+        
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddScoped<IUser, AspNetUser>();
+    }
+
+
 }
