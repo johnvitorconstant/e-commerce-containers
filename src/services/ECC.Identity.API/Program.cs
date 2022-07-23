@@ -1,14 +1,13 @@
+using System.Text;
+using ECC.Identity.API.Data;
+using ECC.WebAPI.Core.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NSE.Identity.API.Data;
-using NSE.Identity.API.Extensions;
-using System.Text;
 
-namespace NSE.Identity.API
+namespace ECC.Identity.API
 {
     public class Program
     {
@@ -98,7 +97,7 @@ namespace NSE.Identity.API
                 Description = "Identity API of ECommerceOnContainers",
                 Contact = new OpenApiContact()
                 {
-                    Name = "John Vitor Constant de Oliveira Lourenço",
+                    Name = "John Vitor Constant de Oliveira LourenÃ§o",
                     Email = "johnvitorconstant@gmail.com",
                     Url = new Uri("https://github.com/johnvitorconstant")
                 },

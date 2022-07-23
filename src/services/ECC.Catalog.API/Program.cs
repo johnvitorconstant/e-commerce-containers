@@ -4,7 +4,7 @@ using ECC.Catalog.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-namespace NSE.Catalog.API
+namespace ECC.Catalog.API
 {
     public class Program
     {
@@ -69,7 +69,7 @@ namespace NSE.Catalog.API
                 Description = "Catalog API of ECommerceOnContainers",
                 Contact = new OpenApiContact()
                 {
-                    Name = "John Vitor Constant de Oliveira Lourenço",
+                    Name = "John Vitor Constant de Oliveira LourenÃ§o",
                     Email = "johnvitorconstant@gmail.com",
                     Url = new Uri("https://github.com/johnvitorconstant")
                 },

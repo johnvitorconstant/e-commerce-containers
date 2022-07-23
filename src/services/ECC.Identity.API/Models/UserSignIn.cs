@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NSE.Identity.API.Models
+namespace ECC.Identity.API.Models
 {
 
     public class UserSignIn

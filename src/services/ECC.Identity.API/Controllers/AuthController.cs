@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using ECC.Identity.API.Models;
+using ECC.WebAPI.Core.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NSE.Identity.API.Extensions;
-using NSE.Identity.API.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
-namespace NSE.Identity.API.Controllers
+namespace ECC.Identity.API.Controllers
 {
     
     [Route("api/identity")]

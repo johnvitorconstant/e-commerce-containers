@@ -1,4 +1,4 @@
-namespace NSE.Request.API
+namespace ECC.Request.API
 {
     public class WeatherForecast
     {

@@ -1,4 +1,4 @@
-namespace NSE.WebApp.MVC.Models
+namespace ECC.WebApp.MVC.Models
 {
     public class ErrorViewModel
     {

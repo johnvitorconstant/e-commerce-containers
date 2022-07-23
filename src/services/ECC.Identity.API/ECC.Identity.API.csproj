@@ -29,4 +29,8 @@
     <Folder Include="Configuration\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\building-blocks\ECC.WebAPI.Core\ECC.WebAPI.Core.csproj" />
+  </ItemGroup>
+
 </Project>
