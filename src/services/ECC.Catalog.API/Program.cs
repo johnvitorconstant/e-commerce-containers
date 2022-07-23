@@ -1,3 +1,6 @@
+using ECC.Catalog.API.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace NSE.Catalog.API
 {
     public class Program
@@ -7,6 +10,7 @@ namespace NSE.Catalog.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            ConfigureDataBase(builder);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,6 +34,15 @@ namespace NSE.Catalog.API
             app.MapControllers();
 
             app.Run();
+        }
+        private static void ConfigureDataBase(WebApplicationBuilder builder)
+        {
+            // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<CatalogContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
         }
     }
 }
