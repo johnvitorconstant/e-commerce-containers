@@ -64,7 +64,8 @@ public class IdentityController : MainController
 
         await DoLogin(response);
 
-        if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Home");
+        if (string.IsNullOrEmpty(returnUrl)) 
+            return RedirectToAction("Index", "Home");
 
         return LocalRedirect(returnUrl);
     }

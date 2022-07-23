@@ -25,7 +25,7 @@ public class Program
         builder.Services.Configure<AppSettingsWeb>(builder.Configuration);
         
        
-        builder.Services.ConfigureJwt(builder.Configuration);
+       // builder.Services.ConfigureJwt(builder.Configuration);
         
         
         builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
