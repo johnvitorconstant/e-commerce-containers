@@ -17,14 +17,14 @@ public class CatalogController : Controller
     }
 
     [AllowAnonymous]
-    [HttpGet("catalog/products")]
+    [HttpGet("api/catalog/products")]
     public async Task<IEnumerable<Product>> Index()
     {
         return await _productRepository.FindAll();
     }
 
     [ClaimsAuthorize("Catalog", "Read")]
-    [HttpGet("catalog/products/{id}")]
+    [HttpGet("api/catalog/products/{id}")]
     public async Task<Product> ProductDetail(Guid id)
     {
         return await _productRepository.FindById(id);

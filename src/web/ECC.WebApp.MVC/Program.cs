@@ -29,6 +29,7 @@ public class Program
         
         
         builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddHttpClient<ICatalogService, CatalogService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<IUser, AspNetUser>();
 
