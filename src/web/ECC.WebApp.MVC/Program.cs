@@ -1,6 +1,7 @@
 using ECC.WebAPI.Core.Identity;
 using ECC.WebApp.MVC.Extensions;
 using ECC.WebApp.MVC.Services;
+using ECC.WebApp.MVC.Services.Handlers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ECC.WebApp.MVC;
@@ -23,13 +24,14 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         builder.Services.Configure<AppSettingsWeb>(builder.Configuration);
-        
-       
-       // builder.Services.ConfigureJwt(builder.Configuration);
-        
-        
+
+
+        // builder.Services.ConfigureJwt(builder.Configuration);
+
+        builder.Services.AddTransient<HttpClientAuthorizationDelegationHandler>();
         builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
-        builder.Services.AddHttpClient<ICatalogService, CatalogService>();
+        builder.Services.AddHttpClient<ICatalogService, CatalogService>()
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<IUser, AspNetUser>();
 
@@ -58,7 +60,7 @@ public class Program
 
         app.MapControllerRoute(
             "default",
-            "{controller=Home}/{action=Index}/{id?}");
+            "{controller=Catalog}/{action=Index}/{id?}");
 
         app.Run();
     }

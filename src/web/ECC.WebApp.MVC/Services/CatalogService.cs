@@ -20,7 +20,7 @@ class CatalogService :Service, ICatalogService
     public async Task<ProductViewModel> FindById(Guid id)
     {
         var response = await _httpClient.GetAsync($"{_catalogUrl}/api/catalog/products/{id}");
-        HandleErrorResponses(response); //
+        HandleErrorResponses(response); 
         return await GetDeserializedDataResponse<ProductViewModel>(response);
     }
     public async Task<IEnumerable<ProductViewModel>> FindAll()
