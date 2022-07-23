@@ -2,6 +2,7 @@ using ECC.Catalog.API.Data;
 using ECC.Catalog.API.Data.Repository;
 using ECC.Catalog.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace NSE.Catalog.API
 {
@@ -14,40 +15,23 @@ namespace NSE.Catalog.API
             // Add services to the container.
             ConfigureDataBase(builder);
 
-            ConfigureDependency(builder.Services);
+            ConfigureDependencyInjection(builder);
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            ConfigureServices(builder);
 
+            ConfigureSwagger(builder);
 
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
+            ConfigureApp(builder);
 
 
-            app.MapControllers();
-
-            app.Run();
         }
 
-        private static void ConfigureDependency(IServiceCollection services)
+        private static void ConfigureDependencyInjection(WebApplicationBuilder builder)
         {
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<CatalogContext>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<CatalogContext>();
         }
 
-   
 
         private static void ConfigureDataBase(WebApplicationBuilder builder)
         {
@@ -57,6 +41,64 @@ namespace NSE.Catalog.API
             {
                 options.UseSqlServer(connectionString);
             });
+        }
+
+        private static void ConfigureServices(WebApplicationBuilder builder)
+        {
+            builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Total", builder =>
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+            });
+
+        }
+
+        private static void ConfigureSwagger(WebApplicationBuilder builder)
+        {
+            var services = builder.Services;
+
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "ECommerceOnContainers Catalog API",
+                Description = "Catalog API of ECommerceOnContainers",
+                Contact = new OpenApiContact()
+                {
+                    Name = "John Vitor Constant de Oliveira Lourenço",
+                    Email = "johnvitorconstant@gmail.com",
+                    Url = new Uri("https://github.com/johnvitorconstant")
+                },
+                License = new OpenApiLicense()
+                {
+                    Name = "MIT",
+                    Url = new Uri("https://opensource.org/licenses/MIT")
+                },
+            }));
+        }
+
+        private static void ConfigureApp(WebApplicationBuilder builder)
+        {
+            var app = builder.Build();
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+                builder.Configuration.AddUserSecrets<Program>();
+            }
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+            app.UseCors("Total");
+         //   app.UseAuthentication();
+         //   app.UseAuthorization();
+            app.MapControllers();
+            app.Run();
+
         }
     }
 }

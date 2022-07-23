@@ -22,7 +22,7 @@ namespace ECC.Catalog.API.Data.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(250)");
 
-            builder.ToTable("Product");
+            builder.ToTable("Products");
 
         }
     }
