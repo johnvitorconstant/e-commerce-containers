@@ -1,3 +1,4 @@
+using ECC.WebAPI.Core.Identity;
 using ECC.WebApp.MVC.Extensions;
 using ECC.WebApp.MVC.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -20,8 +21,13 @@ public class Program
         // Add services to the container.
 
         builder.Services.AddControllersWithViews();
-        builder.Services.Configure<AppSettings>(builder.Configuration);
 
+        builder.Services.Configure<AppSettingsWeb>(builder.Configuration);
+        
+       
+        builder.Services.ConfigureJwt(builder.Configuration);
+        
+        
         builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<IUser, AspNetUser>();
