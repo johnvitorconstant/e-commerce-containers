@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "NSE.Catalog.API": {
+    "ECC.Catalog.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
