@@ -1,4 +1,4 @@
-namespace NSE.ShoppingCart.API
+namespace ECC.ShoppingCart.API
 {
     public class Program
     {

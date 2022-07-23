@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace NSE.Payment.API.Controllers
+namespace ECC.Payment.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

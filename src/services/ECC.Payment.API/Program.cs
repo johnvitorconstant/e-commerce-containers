@@ -1,4 +1,4 @@
-namespace NSE.Payment.API
+namespace ECC.Payment.API
 {
     public class Program
     {

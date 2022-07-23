@@ -3,4 +3,4 @@ update-database
 
 
 Default User: john@gmail.com
-Default PassWord: Senha@123
+Default Password: Senha@123
