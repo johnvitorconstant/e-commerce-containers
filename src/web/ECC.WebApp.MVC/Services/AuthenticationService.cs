@@ -2,64 +2,51 @@
 using ECC.WebApp.MVC.Models;
 using Microsoft.Extensions.Options;
 
-namespace ECC.WebApp.MVC.Services
+namespace ECC.WebApp.MVC.Services;
+
+public class AuthenticationService : Service, IAuthenticationService
 {
-    public class AuthenticationService : Service, IAuthenticationService
+    private readonly HttpClient _httpClient;
+
+    public AuthenticationService(HttpClient httpClient, IOptions<AppSettings> settings)
     {
+        httpClient.BaseAddress = new Uri(settings.Value.AuthenticationUrl);
+        _httpClient = httpClient;
+    }
 
-        private readonly HttpClient _httpClient;
+    public async Task<UserResponseSignIn> Login(UserSignIn user)
+    {
+        var content = GetSerializedDataContent(user);
 
-        public AuthenticationService(HttpClient httpClient, IOptions<AppSettings> settings)
-        {
-            httpClient.BaseAddress = new Uri(settings.Value.AuthenticationUrl);
-            _httpClient = httpClient;
-        }
-
-        public async Task<UserResponseSignIn> Login(UserSignIn user)
-        {
-          
-            var content = GetSerializedDataContent(user);
-
-            var response = await _httpClient.PostAsync($"/api/identity/signin", content);
+        var response = await _httpClient.PostAsync("/api/identity/signin", content);
 
 
-            var result = await response.Content.ReadAsStringAsync();
+        var result = await response.Content.ReadAsStringAsync();
 
-          
 
-            if (!HandleErrorResponses(response))
+        if (!HandleErrorResponses(response))
+            return new UserResponseSignIn
             {
-                return new UserResponseSignIn
-                {
-                    ResponseResult = await GetDeserializedDataResponse<ResponseResult>(response)
-                };
-
-            }
+                ResponseResult = await GetDeserializedDataResponse<ResponseResult>(response)
+            };
 
 
-            return await GetDeserializedDataResponse<UserResponseSignIn>(response);
-        }
+        return await GetDeserializedDataResponse<UserResponseSignIn>(response);
+    }
 
-        public async Task<UserResponseSignIn> Register(UserSignUp user)
-        {
-            var content = GetSerializedDataContent(user);
+    public async Task<UserResponseSignIn> Register(UserSignUp user)
+    {
+        var content = GetSerializedDataContent(user);
 
-            var response = await _httpClient.PostAsync($"/api/identity/signup", content);
-            var result = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.PostAsync("/api/identity/signup", content);
+        var result = await response.Content.ReadAsStringAsync();
 
 
-            if (!HandleErrorResponses(response))
+        if (!HandleErrorResponses(response))
+            return new UserResponseSignIn
             {
-                return new UserResponseSignIn
-                {
-                    ResponseResult = await GetDeserializedDataResponse<ResponseResult>(response)
-                };
-
-            }
-            return await GetDeserializedDataResponse<UserResponseSignIn>(response);
-
-        }
+                ResponseResult = await GetDeserializedDataResponse<ResponseResult>(response)
+            };
+        return await GetDeserializedDataResponse<UserResponseSignIn>(response);
     }
 }
-
-

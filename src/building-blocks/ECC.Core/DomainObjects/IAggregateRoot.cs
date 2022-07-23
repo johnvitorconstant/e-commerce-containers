@@ -1,4 +1,5 @@
-﻿namespace ECC.Core.DomainObjects
+﻿namespace ECC.Core.DomainObjects;
+
+public interface IAggregateRoot
 {
-    public interface IAggregateRoot { }
 }

@@ -1,45 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ECC.Core.DomainObjects;
 
-namespace ECC.Core.DomainObjects
+public abstract class Entity
 {
-    public abstract class Entity
+    public Guid Id { get; set; }
+
+    public override bool Equals(object? obj)
     {
-        public Guid Id { get; set; }
+        return obj is Entity entity &&
+               Id.Equals(entity.Id);
+    }
 
-        public override bool Equals(object? obj)
-        {
-            return obj is Entity entity &&
-                   Id.Equals(entity.Id);
-        }
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id);
+    }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id);
-        }
+    public override string? ToString()
+    {
+        return $"{GetType().Name} [Id = {Id}]";
+    }
 
-        public override string? ToString()
-        {
-            return $"{GetType().Name} [Id = {Id}]";
-        }
+    public static bool operator ==(Entity a, Entity b)
+    {
+        if (ReferenceEquals(a, b) && ReferenceEquals(b, null)) return true;
 
-        public static bool operator ==(Entity a, Entity b)
-        {
-            if (ReferenceEquals(a, b) && ReferenceEquals(b,null)) return true;
+        if (ReferenceEquals(b, null) || ReferenceEquals(b, null)) return false;
 
-            if (ReferenceEquals(b, null) || ReferenceEquals(b, null)) return false;
+        return a.Equals(b);
+    }
 
-            return a.Equals(b);
-           
-        }
-
-        public static bool operator !=(Entity a, Entity b)
-        {
-            return !(a == b);
-        }
-
+    public static bool operator !=(Entity a, Entity b)
+    {
+        return !(a == b);
     }
 }
