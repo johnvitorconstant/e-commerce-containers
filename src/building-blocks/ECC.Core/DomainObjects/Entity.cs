@@ -12,6 +12,8 @@ public abstract class Entity
     }
 
     private List<Event> _notifications;
+
+
     public IReadOnlyCollection<Event> Notifications => _notifications?.AsReadOnly();
 
     public void AddEvent(Event e)

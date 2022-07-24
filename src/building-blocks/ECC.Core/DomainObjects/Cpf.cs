@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ECC.Core.Utils;
 
 namespace ECC.Core.DomainObjects
 {
@@ -23,7 +22,7 @@ namespace ECC.Core.DomainObjects
 
         public static bool Validate(string cpf)
         {
-            cpf.OnlyNumbers();
+            
             if (cpf.Length > 11)
                 return false;
 

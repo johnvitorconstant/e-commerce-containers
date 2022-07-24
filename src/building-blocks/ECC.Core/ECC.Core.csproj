@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <Folder Include="Mediator\" />
+      <Folder Include="Utils\" />
     </ItemGroup>
 
 </Project>

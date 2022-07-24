@@ -1,5 +1,7 @@
 ﻿using ECC.Catalog.API.Models;
 using ECC.Core.Data;
+using ECC.Core.Messages;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECC.Catalog.API.Data;
@@ -20,6 +22,9 @@ public class CatalogContext : DbContext, IUnityOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Ignore<ValidationResult>();
+        modelBuilder.Ignore<Event>();
+
         foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                      e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
             property.SetColumnType("varchar(1000)");

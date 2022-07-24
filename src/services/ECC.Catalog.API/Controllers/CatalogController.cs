@@ -1,13 +1,14 @@
 ﻿using ECC.Catalog.API.Models;
+using ECC.WebAPI.Core.Controllers;
 using ECC.WebAPI.Core.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECC.Catalog.API.Controllers;
 
-[ApiController]
+
 [Authorize]
-public class CatalogController : Controller
+public class CatalogController : MainController
 {
     private readonly IProductRepository _productRepository;
 

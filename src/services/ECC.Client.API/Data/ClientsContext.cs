@@ -3,6 +3,7 @@ using ECC.Client.API.Models;
 using ECC.Core.Data;
 using ECC.Core.DomainObjects;
 using ECC.Core.Mediator;
+using ECC.Core.Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECC.Client.API.Data
@@ -22,7 +23,9 @@ namespace ECC.Client.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+
+            modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<Event>();
 
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                          e => e.GetProperties().Where(p => p.ClrType == typeof(string))))

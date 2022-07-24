@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using ECC.Identity.API.Models;
+using ECC.WebAPI.Core.Controllers;
 using ECC.WebAPI.Core.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
