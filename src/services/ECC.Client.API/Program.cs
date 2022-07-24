@@ -1,5 +1,6 @@
 using ECC.Client.API.Application.Commands;
 using ECC.Client.API.Data;
+using ECC.Client.API.Models;
 using ECC.Core.Mediator;
 using ECC.WebAPI.Core.Identity;
 using FluentValidation.Results;
@@ -30,6 +31,8 @@ public class Program
 
         builder.Services.AddScoped<IMediatorHandler, MediatorHandler>();
         builder.Services.AddScoped<IRequestHandler<RegisterClientCommand, ValidationResult>, ClientCommandHandler>();
+        builder.Services.AddScoped<IClientRepository, ClientRepository>();
+        builder.Services.AddScoped<ClientsContext>();
 
     }
     private static void ConfigureDataBase(WebApplicationBuilder builder)
