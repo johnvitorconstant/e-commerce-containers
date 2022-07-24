@@ -21,8 +21,8 @@ public class AuthenticationService : Service, IAuthenticationService
     public async Task<UserResponseSignIn> Login(UserSignIn user)
     {
         var content = GetSerializedDataContent(user);
-        
 
+        var teste = _authenticationUrl;
         var response = await _httpClient.PostAsync($"{_authenticationUrl}/api/identity/signin", content);
 
 

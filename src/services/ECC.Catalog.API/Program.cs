@@ -15,7 +15,7 @@ public class Program
 
         // Add services to the container.
         ConfigureDataBase(builder);
-        
+
         ConfigureDependencyInjection(builder);
         ConfigureServices(builder);
 
@@ -59,22 +59,48 @@ public class Program
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo
+        services.AddSwaggerGen(c =>
         {
-            Title = "ECommerceOnContainers Catalog API",
-            Description = "Catalog API of ECommerceOnContainers",
-            Contact = new OpenApiContact
+            c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Name = "John Vitor Constant de Oliveira Lourenço",
-                Email = "johnvitorconstant@gmail.com",
-                Url = new Uri("https://github.com/johnvitorconstant")
-            },
-            License = new OpenApiLicense
+                Title = "ECommerceOnContainers Catalog API",
+                Description = "Catalog API of ECommerceOnContainers",
+                Contact = new OpenApiContact
+                {
+                    Name = "John Vitor Constant de Oliveira Lourenço",
+                    Email = "johnvitorconstant@gmail.com",
+                    Url = new Uri("https://github.com/johnvitorconstant")
+                },
+                License = new OpenApiLicense
+                    { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+            });
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Name = "MIT",
-                Url = new Uri("https://opensource.org/licenses/MIT")
-            }
-        }));
+                Description = "Bearer {your token}",
+                Name = "Authorization",
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id="Bearer"
+                        }
+                    },
+                    new string[]{}
+                }
+            });
+        });
+
+
+
     }
 
     private static void ConfigureApp(WebApplicationBuilder builder)
