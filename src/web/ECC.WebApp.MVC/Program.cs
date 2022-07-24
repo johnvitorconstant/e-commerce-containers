@@ -3,6 +3,7 @@ using ECC.WebApp.MVC.Extensions;
 using ECC.WebApp.MVC.Services;
 using ECC.WebApp.MVC.Services.Handlers;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Polly;
 
 namespace ECC.WebApp.MVC;
@@ -78,6 +79,8 @@ public class Program
         //        .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>()
         //        .AddTypedClient(Refit.RestService.For<ICatalogServiceRefit>);
 
+
+        builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<IUser, AspNetUser>();
     }
