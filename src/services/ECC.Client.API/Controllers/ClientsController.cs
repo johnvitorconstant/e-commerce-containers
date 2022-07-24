@@ -21,7 +21,7 @@ public class ClientsController : MainController
     public async Task<IActionResult>  Index()
     {
         var result =  await _mediatorHandler.SendCommand((new RegisterClientCommand(Guid.NewGuid(), "John", "john1@gmail.com",
-            "30849593077")));
+            "")));
 
    
 

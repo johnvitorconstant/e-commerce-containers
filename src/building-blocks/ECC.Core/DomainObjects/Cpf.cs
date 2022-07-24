@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ECC.Core.DomainObjects
@@ -22,7 +24,8 @@ namespace ECC.Core.DomainObjects
 
         public static bool Validate(string cpf)
         {
-            
+            cpf = new String(cpf.Where(Char.IsDigit).ToArray());
+
             if (cpf.Length > 11)
                 return false;
 

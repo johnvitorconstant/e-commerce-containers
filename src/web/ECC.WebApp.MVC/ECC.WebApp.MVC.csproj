@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\building-blocks\ECC.Core\ECC.Core.csproj" />
       <ProjectReference Include="..\..\building-blocks\ECC.WebAPI.Core\ECC.WebAPI.Core.csproj" />
     </ItemGroup>
 
