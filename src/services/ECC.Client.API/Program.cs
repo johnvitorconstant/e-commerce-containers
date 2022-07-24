@@ -1,5 +1,9 @@
+using ECC.Client.API.Application.Commands;
 using ECC.Client.API.Data;
+using ECC.Core.Mediator;
 using ECC.WebAPI.Core.Identity;
+using FluentValidation.Results;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -22,7 +26,11 @@ public class Program
     }
     private static void ConfigureDependencyInjection(WebApplicationBuilder builder)
     {
-        
+        builder.Services.AddMediatR(typeof(Program));
+
+        builder.Services.AddScoped<IMediatorHandler, MediatorHandler>();
+        builder.Services.AddScoped<IRequestHandler<RegisterClientCommand, ValidationResult>, ClientCommandHandler>();
+
     }
     private static void ConfigureDataBase(WebApplicationBuilder builder)
     {
