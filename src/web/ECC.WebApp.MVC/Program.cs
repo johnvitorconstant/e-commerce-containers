@@ -3,6 +3,7 @@ using ECC.WebApp.MVC.Extensions;
 using ECC.WebApp.MVC.Services;
 using ECC.WebApp.MVC.Services.Handlers;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Polly;
 
 namespace ECC.WebApp.MVC;
 
@@ -65,16 +66,18 @@ public class Program
         builder.Services.AddTransient<HttpClientAuthorizationDelegationHandler>();
         builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
 
-        //    services.AddHttpClient<ICatalogService, CatalogService>()
-        //        .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>();
+        builder.Services.AddHttpClient<ICatalogService, CatalogService>()
+             .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>()
+             .AddTransientHttpErrorPolicy(p => 
+                 p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
 
-        builder.Services.AddHttpClient("Refit", options =>
-            {
-                options.BaseAddress = new Uri(builder.Configuration.GetSection("CatalogUrl").Value);
-            })
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>()
-            .AddTypedClient(Refit.RestService.For<ICatalogServiceRefit>);
-        
+        //    builder.Services.AddHttpClient("Refit", options =>
+        //        {
+        //            options.BaseAddress = new Uri(builder.Configuration.GetSection("CatalogUrl").Value);
+        //        })
+        //        .AddHttpMessageHandler<HttpClientAuthorizationDelegationHandler>()
+        //        .AddTypedClient(Refit.RestService.For<ICatalogServiceRefit>);
+
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<IUser, AspNetUser>();
     }
