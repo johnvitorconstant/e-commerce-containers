@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "NSE.Client.API": {
+    "ECC.Client.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

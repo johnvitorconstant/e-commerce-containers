@@ -32,7 +32,6 @@ public class Program
         builder.Services.AddScoped<CatalogContext>();
     }
 
-
     private static void ConfigureDataBase(WebApplicationBuilder builder)
     {
         // Add services to the container.
