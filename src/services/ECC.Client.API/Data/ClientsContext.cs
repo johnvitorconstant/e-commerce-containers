@@ -1,14 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ECC.Client.API.Models;
 using ECC.Core.Data;
+using ECC.Core.DomainObjects;
+using ECC.Core.Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECC.Client.API.Data
 {
     public class ClientsContext : DbContext, IUnityOfWork
     {
-        public ClientsContext(DbContextOptions<ClientsContext> options): base(options)
+        private readonly IMediatorHandler _mediatorHandler;
+        public ClientsContext(DbContextOptions<ClientsContext> options, IMediatorHandler mediatorHandler) : base(options)
         {
+            _mediatorHandler = mediatorHandler;
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
@@ -32,7 +36,39 @@ namespace ECC.Client.API.Data
         
         public async Task<bool> Commit()
         {
-         return await base.SaveChangesAsync() > 0;
+            var success = await base.SaveChangesAsync() > 0;
+            if (success)
+            {
+                await _mediatorHandler.PublishEvents(this);
+            }
+            
+            return success;
+            
+        }
+    }
+
+    public static class MediatorExtension
+    {
+        public static async Task PublishEvents<T>(this IMediatorHandler mediator, T ctx) where T : DbContext
+        {
+
+            var domainEntities = ctx.ChangeTracker
+                .Entries<Entity>()
+                .Where(x => x.Entity.Notifications != null && x.Entity.Notifications.Any());
+
+            var domainEvents = domainEntities
+                .SelectMany(x => x.Entity.Notifications)
+                .ToList();
+
+            domainEntities.ToList()
+                .ForEach(entity => entity.Entity.CleanEvents());
+
+            var tasks = domainEvents
+                .Select(async (domainEvent) => {
+                    await mediator.PublishEvent(domainEvent);
+                });
+
+            await Task.WhenAll(tasks);
         }
     }
 }

@@ -1,9 +1,35 @@
-﻿namespace ECC.Core.DomainObjects;
+﻿using ECC.Core.Messages;
+
+namespace ECC.Core.DomainObjects;
 
 public abstract class Entity
 {
     public Guid Id { get; set; }
 
+    protected Entity()
+    {
+        Id = Guid.NewGuid();
+    }
+
+    private List<Event> _notifications;
+    public IReadOnlyCollection<Event> Notifications => _notifications?.AsReadOnly();
+
+    public void AddEvent(Event e)
+    {
+        _notifications = _notifications ?? new List<Event>();
+        _notifications.Add(e);
+    }
+
+    public void RemoveEvent(Event e)
+    {
+        _notifications?.Remove(e);
+    }
+    public void CleanEvents()
+    {
+        _notifications?.Clear();
+    }
+
+    #region comparision
     public override bool Equals(object? obj)
     {
         return obj is Entity entity &&
@@ -33,4 +59,7 @@ public abstract class Entity
     {
         return !(a == b);
     }
+    #endregion
+
+
 }

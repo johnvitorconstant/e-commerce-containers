@@ -1,4 +1,5 @@
 using ECC.Client.API.Application.Commands;
+using ECC.Client.API.Application.Events;
 using ECC.Client.API.Data;
 using ECC.Client.API.Models;
 using ECC.Core.Mediator;
@@ -33,6 +34,7 @@ public class Program
         builder.Services.AddScoped<IRequestHandler<RegisterClientCommand, ValidationResult>, ClientCommandHandler>();
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddScoped<ClientsContext>();
+        builder.Services.AddScoped<INotificationHandler<ClientRegisteredEvent>, ClientEventHandler>();
 
     }
     private static void ConfigureDataBase(WebApplicationBuilder builder)

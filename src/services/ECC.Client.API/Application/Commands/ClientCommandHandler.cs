@@ -1,4 +1,5 @@
-﻿using ECC.Client.API.Models;
+﻿using ECC.Client.API.Application.Events;
+using ECC.Client.API.Models;
 using ECC.Core.Messages;
 using FluentValidation.Results;
 using MediatR;
@@ -33,6 +34,8 @@ namespace ECC.Client.API.Application.Commands
             }
 
             _clientRepository.Add(client);
+
+            client.AddEvent(new ClientRegisteredEvent(message.Id, message.Name, message.Email, message.Cpf));
 
             return await PersistData(_clientRepository.UnityOfWork);
         }

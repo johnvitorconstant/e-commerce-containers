@@ -1,5 +1,14 @@
-﻿namespace ECC.Core.Messages;
+﻿using MediatR;
 
-public class Event : Message
+namespace ECC.Core.Messages;
+
+public class Event : Message, INotification
 {
+    public DateTime Timestamp { get;private set; }
+
+
+    public Event()
+    {
+        Timestamp=DateTime.UtcNow;
+    }
 }
