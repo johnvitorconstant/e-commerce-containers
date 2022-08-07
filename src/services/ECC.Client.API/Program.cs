@@ -2,7 +2,9 @@ using ECC.Client.API.Application.Commands;
 using ECC.Client.API.Application.Events;
 using ECC.Client.API.Data;
 using ECC.Client.API.Models;
+using ECC.Client.API.Services;
 using ECC.Core.Mediator;
+using ECC.MessageBus;
 using ECC.WebAPI.Core.Identity;
 using FluentValidation.Results;
 using MediatR;
@@ -35,6 +37,10 @@ public class Program
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddScoped<ClientsContext>();
         builder.Services.AddScoped<INotificationHandler<ClientRegisteredEvent>, ClientEventHandler>();
+
+        builder.Services.AddHostedService<RegisterClientIntegrationHandler>();
+
+        builder.Services.AddMessageBus("host=localhost:5672;publisherConfirms=true;timeout=10");
 
     }
     private static void ConfigureDataBase(WebApplicationBuilder builder)
