@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using EasyNetQ;
+using ECC.Core.Messages.Integration;
 using ECC.Identity.API.Models;
 using ECC.WebAPI.Core.Controllers;
 using ECC.WebAPI.Core.Identity;
@@ -18,12 +20,15 @@ public class AuthController : MainController
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
 
+    private IBus _bus;
+
     public AuthController(SignInManager<IdentityUser> signInManager,
         UserManager<IdentityUser> userManager,
-        IOptions<AppSettings> appSettings)
+        IOptions<AppSettings> appSettings, IBus bus)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _bus = bus;
         _appSettings = appSettings.Value;
     }
 
@@ -41,12 +46,34 @@ public class AuthController : MainController
         };
 
         var result = await _userManager.CreateAsync(user, userSignUp.Password);
-        if (result.Succeeded) return CustomResponse(await GenerateJwt(userSignUp.Email));
+
+        if (result.Succeeded)
+        {
+            //Lançar evento de integração
+           var success = await RegisterClient(userSignUp);
+
+            return CustomResponse(await GenerateJwt(userSignUp.Email));
+        }
 
         foreach (var error in result.Errors) AddProcessError(error.Description);
 
         return CustomResponse();
     }
+
+    private async Task<ResponseMessage> RegisterClient(UserSignUp registerUser)
+    {
+        var user = await _userManager.FindByEmailAsync(registerUser.Email);
+
+        var registeredUser = new RegisteredUserIntegrationEvent(Guid.Parse(user.Id), registerUser.Name,
+            registerUser.Email, registerUser.Cpf);
+
+        _bus = RabbitHutch.CreateBus("host=localhost:5672");
+
+       var success= await _bus.Rpc.RequestAsync<RegisteredUserIntegrationEvent, ResponseMessage>(registeredUser);
+
+        return success;
+    }
+
 
     [HttpPost("signin")]
     public async Task<IActionResult> SignIn(UserSignIn userSignIn)
