@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECC.Identity.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220721023146_SecondPhase")]
-    partial class SecondPhase
+    [Migration("20220905222333_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

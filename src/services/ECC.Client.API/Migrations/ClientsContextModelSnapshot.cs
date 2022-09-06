@@ -42,6 +42,9 @@ namespace ECC.Client.API.Migrations
                     b.Property<string>("Complement")
                         .HasColumnType("varchar(250)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("District")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
@@ -74,6 +77,9 @@ namespace ECC.Client.API.Migrations
 
                     b.Property<bool>("Blocked")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()

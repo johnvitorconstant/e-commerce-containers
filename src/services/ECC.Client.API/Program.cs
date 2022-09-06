@@ -21,10 +21,12 @@ public class Program
 
         // Add services to the container.
         ConfigureDataBase(builder);
+        ConfigureRabbitMq(builder);
         ConfigureDependencyInjection(builder);
         ConfigureServices(builder);
         builder.Services.ConfigureJwt(builder.Configuration);
         ConfigureSwagger(builder);
+
         ConfigureApp(builder);
 
     }
@@ -37,12 +39,19 @@ public class Program
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddScoped<ClientsContext>();
         builder.Services.AddScoped<INotificationHandler<ClientRegisteredEvent>, ClientEventHandler>();
-
+        
         builder.Services.AddHostedService<RegisterClientIntegrationHandler>();
 
-        builder.Services.AddMessageBus("host=localhost:5672;publisherConfirms=true;timeout=10");
+  
 
     }
+
+    private static void ConfigureRabbitMq(WebApplicationBuilder builder)
+    {
+        var rabbitMqConnString = builder.Configuration.GetConnectionString("RabbitMqConnection");
+        builder.Services.AddMessageBus(rabbitMqConnString);
+    }
+
     private static void ConfigureDataBase(WebApplicationBuilder builder)
     {
         // Add services to the container.
@@ -131,4 +140,5 @@ public class Program
         app.Run();
     }
 
+    
 }

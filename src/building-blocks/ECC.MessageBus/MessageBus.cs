@@ -12,6 +12,10 @@ public class MessageBus : IMessageBus
 {
     private IBus _bus;
     private readonly string _connectionString;
+    private IAdvancedBus _advancedBus;
+
+    public IAdvancedBus AdvancedBus => _bus?.Advanced;
+    public bool IsConnected => _bus?.Advanced.IsConnected ?? false;
 
     public MessageBus(string connectionString)
     {
@@ -30,12 +34,25 @@ public class MessageBus : IMessageBus
         policy.Execute(() =>
         {
             _bus = RabbitHutch.CreateBus(_connectionString);
+            _advancedBus = _bus.Advanced;
+            _advancedBus.Disconnected += OnDisconnect;
         });
 
 
     }
 
-    public bool IsConnected => _bus?.Advanced.IsConnected ?? false;
+
+    private void OnDisconnect(object s, EventArgs e)
+    {
+        var policy = Policy.Handle<EasyNetQException>()
+            .Or<BrokerUnreachableException>()
+            .RetryForever();
+
+        policy.Execute(TryConnect);
+    }
+
+    
+    
 
 
     public void Publish<T>(T message) where T : IntegrationEvent

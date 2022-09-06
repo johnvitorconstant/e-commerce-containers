@@ -1,10 +1,13 @@
-﻿using EasyNetQ.Internals;
+﻿using EasyNetQ;
+using EasyNetQ.Internals;
 using ECC.Core.Messages.Integration;
 
 namespace ECC.MessageBus;
 
 public interface IMessageBus : IDisposable
 {
+    bool IsConnected { get; }
+    IAdvancedBus? AdvancedBus { get; }
     void Publish<T>(T message) where T : IntegrationEvent;
     Task PublishAsync<T>(T message) where T : IntegrationEvent;
 
@@ -27,6 +30,6 @@ public interface IMessageBus : IDisposable
         where TRequest : IntegrationEvent
         where TResponse : ResponseMessage;
 
-    bool IsConnected { get; }
+    
 
 }

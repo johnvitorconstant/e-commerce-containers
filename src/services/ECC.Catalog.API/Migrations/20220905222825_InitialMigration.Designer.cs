@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECC.Catalog.API.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20220723153734_RenamingCatalogItem")]
-    partial class RenamingCatalogItem
+    [Migration("20220905222825_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,7 +56,7 @@ namespace ECC.Catalog.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Products", (string)null);
                 });
 #pragma warning restore 612, 618
         }

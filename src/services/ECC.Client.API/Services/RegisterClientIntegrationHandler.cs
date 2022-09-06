@@ -1,4 +1,5 @@
-﻿using ECC.Client.API.Application.Commands;
+﻿using EasyNetQ;
+using ECC.Client.API.Application.Commands;
 using ECC.Core.Mediator;
 using ECC.Core.Messages.Integration;
 using ECC.MessageBus;
@@ -17,13 +18,27 @@ public class RegisterClientIntegrationHandler : BackgroundService
         _bus = bus;
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    public void SetResponder()
     {
-       
         _bus.RespondAsync<RegisteredUserIntegrationEvent, ResponseMessage>(async request =>
             await RegisterClient(request));
 
+        _bus.AdvancedBus.Connected += OnConnect;
+    }
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+
+        SetResponder();
+
+        
+
         return Task.CompletedTask;
+    }
+
+    private void OnConnect(object s, EventArgs e)
+    {
+        SetResponder();
     }
 
     private async Task<ResponseMessage> RegisterClient(RegisteredUserIntegrationEvent message)
