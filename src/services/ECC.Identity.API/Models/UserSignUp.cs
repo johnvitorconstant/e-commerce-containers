@@ -15,4 +15,12 @@ public class UserSignUp
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Compare("Password", ErrorMessage = "As senhas não conferem.")]
     public string PasswordConfirmation { get; set; }
+
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    public string Name { get; set; }
+
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    public string Cpf { get; set; }
+
+
 }

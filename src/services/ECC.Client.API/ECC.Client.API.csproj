@@ -21,15 +21,18 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Controllers\" />
+      <Folder Include="Services\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\building-blocks\ECC.Core\ECC.Core.csproj" />
+      <ProjectReference Include="..\..\building-blocks\ECC.MessageBus\ECC.MessageBus.csproj" />
       <ProjectReference Include="..\..\building-blocks\ECC.WebAPI.Core\ECC.WebAPI.Core.csproj" />
     </ItemGroup>
 

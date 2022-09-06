@@ -11,6 +11,8 @@ public abstract class Entity
         Id = Guid.NewGuid();
     }
 
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
     private List<Event> _notifications;
 
 

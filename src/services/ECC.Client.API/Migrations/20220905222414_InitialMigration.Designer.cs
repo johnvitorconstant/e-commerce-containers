@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECC.Client.API.Migrations
 {
     [DbContext(typeof(ClientsContext))]
-    [Migration("20220724172641_Clients")]
-    partial class Clients
+    [Migration("20220905222414_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,9 @@ namespace ECC.Client.API.Migrations
 
                     b.Property<string>("Complement")
                         .HasColumnType("varchar(250)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("District")
                         .IsRequired()
@@ -76,6 +79,9 @@ namespace ECC.Client.API.Migrations
 
                     b.Property<bool>("Blocked")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()

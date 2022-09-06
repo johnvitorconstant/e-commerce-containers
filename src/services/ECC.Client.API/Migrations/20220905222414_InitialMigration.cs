@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ECC.Client.API.Migrations
 {
-    public partial class Clients : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,8 @@ namespace ECC.Client.API.Migrations
                     Name = table.Column<string>(type: "varchar(200)", nullable: false),
                     Email = table.Column<string>(type: "varchar(254)", nullable: false),
                     Cpf = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false),
-                    Blocked = table.Column<bool>(type: "bit", nullable: false)
+                    Blocked = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,7 +37,8 @@ namespace ECC.Client.API.Migrations
                     Cep = table.Column<string>(type: "varchar(20)", nullable: false),
                     City = table.Column<string>(type: "varchar(100)", nullable: false),
                     State = table.Column<string>(type: "varchar(50)", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

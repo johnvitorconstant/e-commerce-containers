@@ -1,7 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ECC.Core.Messages.Integration;
 using ECC.Identity.API.Models;
+using ECC.MessageBus;
 using ECC.WebAPI.Core.Controllers;
 using ECC.WebAPI.Core.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -18,13 +20,17 @@ public class AuthController : MainController
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
 
+    private readonly IMessageBus _bus;
+
     public AuthController(SignInManager<IdentityUser> signInManager,
         UserManager<IdentityUser> userManager,
-        IOptions<AppSettings> appSettings)
+        IOptions<AppSettings> appSettings,
+        IMessageBus bus)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _appSettings = appSettings.Value;
+        _bus = bus;
     }
 
     [HttpPost("signup")]
@@ -41,12 +47,26 @@ public class AuthController : MainController
         };
 
         var result = await _userManager.CreateAsync(user, userSignUp.Password);
-        if (result.Succeeded) return CustomResponse(await GenerateJwt(userSignUp.Email));
+
+        if (result.Succeeded)
+        {
+            //Lançar evento de integração
+           var clientResult = await RegisterClient(userSignUp);
+
+           if (!clientResult.ValidationResult.IsValid)
+           {
+               await _userManager.DeleteAsync(user);
+               return CustomResponse(clientResult.ValidationResult);
+           }
+
+            return CustomResponse(await GenerateJwt(userSignUp.Email));
+        }
 
         foreach (var error in result.Errors) AddProcessError(error.Description);
 
         return CustomResponse();
     }
+
 
     [HttpPost("signin")]
     public async Task<IActionResult> SignIn(UserSignIn userSignIn)
@@ -67,6 +87,25 @@ public class AuthController : MainController
 
         AddProcessError("User or password wrong");
         return CustomResponse();
+    }
+
+    private async Task<ResponseMessage> RegisterClient(UserSignUp registerUser)
+    {
+        var user = await _userManager.FindByEmailAsync(registerUser.Email);
+
+        var registeredUser = new RegisteredUserIntegrationEvent(Guid.Parse(user.Id), registerUser.Name,
+            registerUser.Email, registerUser.Cpf);
+
+        try
+        {
+            return await _bus.RequestAsync<RegisteredUserIntegrationEvent, ResponseMessage>(registeredUser);
+        }
+        catch
+        {
+            await _userManager.DeleteAsync(user);
+            throw;
+        }
+        
     }
 
 

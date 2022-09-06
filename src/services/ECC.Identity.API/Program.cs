@@ -1,4 +1,5 @@
 using ECC.Identity.API.Data;
+using ECC.MessageBus;
 using ECC.WebAPI.Core.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddMessageBus("host=localhost:5672;publisherConfirms=true;timeout=10");
 
         ConfigureDataBase(builder);
         ConfigureIdentity(builder);
