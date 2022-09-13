@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.WebAPI.Core", "src\buil
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", "{2CCCEC13-5E70-4272-B531-2F214D22E056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECC.MessageBus", "src\building-blocks\ECC.MessageBus\ECC.MessageBus.csproj", "{59FC328C-043F-46E7-8633-F455B8EE3637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECC.MessageBus", "src\building-blocks\ECC.MessageBus\ECC.MessageBus.csproj", "{59FC328C-043F-46E7-8633-F455B8EE3637}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
