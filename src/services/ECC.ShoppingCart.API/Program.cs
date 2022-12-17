@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using ECC.MessageBus;
 using ECC.ShoppingCart.API.Data;
 using ECC.WebAPI.Core.Identity;
+using ECC.WebAPI.Core.User;
 
 namespace ECC.ShoppingCart.API;
 
@@ -38,7 +39,9 @@ public class Program
 
     private static void ConfigureDependencyInjection(WebApplicationBuilder builder)
     {
-   
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddScoped<IAspNetUser, AspNetUser>();
+        builder.Services.AddScoped<ShoppingCartContext>();
     }
 
 

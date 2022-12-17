@@ -1,4 +1,5 @@
 using ECC.WebAPI.Core.Identity;
+using ECC.WebAPI.Core.User;
 using ECC.WebApp.MVC.Extensions;
 using ECC.WebApp.MVC.Services;
 using ECC.WebApp.MVC.Services.Handlers;
@@ -82,7 +83,7 @@ public class Program
 
         builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        builder.Services.AddScoped<IUser, AspNetUser>();
+        builder.Services.AddScoped<IAspNetUser, AspNetUser>();
     }
 
 

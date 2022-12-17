@@ -1,14 +1,14 @@
 ﻿using System.Net.Http.Headers;
-using ECC.WebApp.MVC.Extensions;
+using ECC.WebAPI.Core.User;
 
 namespace ECC.WebApp.MVC.Services.Handlers
 {
     public class HttpClientAuthorizationDelegationHandler:DelegatingHandler
     {
-        private readonly IUser _user;
+        private readonly IAspNetUser _user;
 
 
-        public HttpClientAuthorizationDelegationHandler(IUser user)
+        public HttpClientAuthorizationDelegationHandler(IAspNetUser user)
         {
             _user = user;
         }

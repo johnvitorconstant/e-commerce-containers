@@ -1,4 +1,6 @@
-﻿namespace ECC.ShoppingCart.API.Model;
+﻿using FluentValidation;
+
+namespace ECC.ShoppingCart.API.Model;
 
 public class CartItem
 {
@@ -13,7 +15,51 @@ public class CartItem
 
     public CartItem()
     {
-       
+
     }
-    
+
+    internal void AssociateCart(Guid cartId)
+    {
+        CartId = cartId;
+    }
+
+    internal decimal CalculateValue()
+    {
+        return Quantity * Price;
+    }
+
+    internal void AddUnity(int unities)
+    {
+        Quantity += unities;
+    }
+
+    internal bool IsValid()
+    {
+        return new OrderItemValidation().Validate(this).IsValid;
+    }
+
+    public class OrderItemValidation : AbstractValidator<CartItem>
+    {
+        public OrderItemValidation()
+        {
+            RuleFor(c => c.ProductId)
+                .NotEqual(Guid.Empty)
+                .WithMessage("Invalid Id");
+
+            RuleFor(c => c.Name)
+                .NotEmpty()
+                .WithMessage("Invalid name");
+
+            RuleFor(c => c.Quantity)
+                .GreaterThan(0)
+                .LessThan(5)
+                .WithMessage("Min is 1 and max is 5");
+
+            RuleFor(c => c.Price)
+                .GreaterThan(0)
+                .WithMessage("Item value need to be positive");
+        }
+    }
+
+
 }
