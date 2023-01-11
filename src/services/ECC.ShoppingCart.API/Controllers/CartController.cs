@@ -37,19 +37,13 @@ namespace ECC.ShoppingCart.API.Controllers
         {
             var cart = await GetCart();
 
-            if (cart == null)
-            {
-                ManipulateNewCart(item);
-            }
-            else
-            {
-                ManipulateExistingCart(cart, item);
-            }
+            if (cart == null) ManipulateNewCart(item);
+            
+            else ManipulateExistingCart(cart, item);
+            
+            ValidateCart(cart);
 
-            if (!OperationIsValid())
-            {
-                return CustomResponse();
-            }
+            if(!OperationIsValid()) return CustomResponse();
 
             await PersistData();
             return CustomResponse();
@@ -68,6 +62,9 @@ namespace ECC.ShoppingCart.API.Controllers
             if (cartItem == null) return CustomResponse();
 
             cart.UpdateUnities(cartItem, item.Quantity);
+
+            ValidateCart(cart);
+            if(!OperationIsValid()) return CustomResponse();
 
             _context.CartItens.Update(cartItem);
             _context.CartClients.Update(cart);
@@ -88,6 +85,9 @@ namespace ECC.ShoppingCart.API.Controllers
             {
                 return CustomResponse();
             }
+
+            ValidateCart(cart);
+            if(!OperationIsValid()) return CustomResponse();
 
             cart.RemoveItem(cartItem);
             _context.CartItens.Remove(cartItem);
@@ -168,5 +168,12 @@ namespace ECC.ShoppingCart.API.Controllers
 
         }
 
+        private bool ValidateCart(CartClient cart)
+        {
+            if(cart.IsValid()) return true;
+
+            cart.ValidationResult.Errors.ToList().ForEach(e => AddProcessError(e.ErrorMessage));
+            return false;
+        }
     }
 }

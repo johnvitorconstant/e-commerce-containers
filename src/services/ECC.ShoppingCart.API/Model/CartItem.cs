@@ -52,7 +52,7 @@ public class CartItem
 
             RuleFor(c => c.Name)
                 .NotEmpty()
-                .WithMessage("Invalid name");
+                .WithMessage(item => $"{item.Name} is invalid name");
 
             RuleFor(c => c.Quantity)
                 .GreaterThan(0)

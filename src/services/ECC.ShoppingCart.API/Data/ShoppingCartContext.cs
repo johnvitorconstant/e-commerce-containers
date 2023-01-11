@@ -1,4 +1,5 @@
 ﻿using ECC.ShoppingCart.API.Model;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECC.ShoppingCart.API.Data;
@@ -20,6 +21,8 @@ public class ShoppingCartContext : DbContext
         foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                      e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
             property.SetColumnType("varchar(100)");
+
+        modelBuilder.Ignore<ValidationResult>();
 
         modelBuilder.Entity<CartClient>()
             .HasIndex(c => c.ClientId)
