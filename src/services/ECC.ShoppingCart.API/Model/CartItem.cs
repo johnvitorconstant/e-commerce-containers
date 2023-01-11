@@ -32,6 +32,10 @@ public class CartItem
     {
         Quantity += unities;
     }
+    internal void UpdateUnity(int unities)
+    {
+        Quantity = unities;
+    }
 
     internal bool IsValid()
     {

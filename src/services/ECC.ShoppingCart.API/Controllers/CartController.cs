@@ -51,11 +51,54 @@ namespace ECC.ShoppingCart.API.Controllers
                 return CustomResponse();
             }
 
-            var result = await _context.SaveChangesAsync();
-            if(result<=0) AddProcessError("Houve um erro no banco de dados");
+            await PersistData();
             return CustomResponse();
 
         }
+
+
+
+
+        [HttpPut("cart/{productId}")]
+        public async Task<IActionResult> UpdateCartItem(Guid productId, CartItem item)
+        {
+
+            var cart = await GetClientCart();
+            var cartItem = await GetValidatedCartItem(productId, cart, item);
+            if (cartItem == null) return CustomResponse();
+
+            cart.UpdateUnities(cartItem, item.Quantity);
+
+            _context.CartItens.Update(cartItem);
+            _context.CartClients.Update(cart);
+
+            await PersistData();
+
+
+            return CustomResponse();
+
+        }
+
+        [HttpDelete("cart/{productId}")]
+        public async Task<IActionResult> RemoveCartItem(Guid productId)
+        {
+            var cart = await GetClientCart();
+            var cartItem = await GetValidatedCartItem(productId, cart);
+            if (cartItem == null)
+            {
+                return CustomResponse();
+            }
+
+            cart.RemoveItem(cartItem);
+            _context.CartItens.Remove(cartItem);
+            _context.CartClients.Update(cart);
+            await PersistData();
+
+            return CustomResponse();
+
+        }
+
+
 
         private void ManipulateNewCart(CartItem item)
         {
@@ -83,25 +126,46 @@ namespace ECC.ShoppingCart.API.Controllers
         }
 
 
-
-        [HttpPut("cart/{productId}")]
-        public async Task<IActionResult> UpdateCartItem(Guid productId, CartItem item)
-        {
-            return CustomResponse();
-        }
-
-        [HttpDelete("cart/{productId}")]
-        public async Task<IActionResult> RemoveCartItem(Guid productId)
-        {
-            return CustomResponse();
-        }
-
-
         private async Task<CartClient> GetClientCart()
         {
             return await _context.CartClients
                 .Include(c => c.Itens)
                 .FirstOrDefaultAsync(c => c.ClientId == _user.GetUserId());
+        }
+
+
+        private async Task<CartItem> GetValidatedCartItem(Guid productId, CartClient cart, CartItem item=null)
+        {
+            if (item!=null && productId != item.ProductId)
+            {
+                AddProcessError("O item não corresponde ao informado");
+                return null;
+            }
+
+            if (cart == null)
+            {
+                AddProcessError("Carrinho não encontrado");
+                return null;
+            }
+
+            var cartItem = await _context.CartItens.FirstOrDefaultAsync(c => c.CartId == cart.Id && c.ProductId == productId);
+
+            if (cartItem == null || !cart.CartItemExist(cartItem))
+            {
+                AddProcessError("O item não está no carrinho");
+                return null;
+            }
+
+            return cartItem;
+
+        }
+
+        private async Task PersistData()
+        {
+            var result = await _context.SaveChangesAsync();
+            if (result <= 0) AddProcessError("Houve um erro no banco de dados");
+
+
         }
 
     }

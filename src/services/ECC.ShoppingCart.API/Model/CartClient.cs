@@ -58,4 +58,28 @@ public class CartClient
 
     }
 
+
+    internal void UpdateItem(CartItem item)
+    {
+        if(!item.IsValid()) return;
+        item.AssociateCart(Id);
+        var currentItem = GetProductById(item.ProductId);
+        Itens.Remove(currentItem);
+        Itens.Add(item);
+        CalculateCartValue();
+    }
+
+    internal void UpdateUnities(CartItem item, int unity)
+    {
+        item.UpdateUnity(unity);
+        UpdateItem(item);
+    }
+
+    internal void RemoveItem(CartItem item)
+    {
+    
+        var currentItem = GetProductById(item.ProductId);
+        Itens.Remove(currentItem);
+        CalculateCartValue();
+    }
 }
